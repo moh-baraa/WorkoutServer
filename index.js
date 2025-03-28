@@ -4,8 +4,19 @@
  const mongoose = require('mongoose')
  const cors = require('cors')
  const app = express()
- app.use(cors());
- app.use(express.json())
+const allowedOrigins = [
+    'https://workout-frontend-eight.vercel.app',
+    'http://localhost:3000'
+];
+
+app.use(cors({
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// معالج خاص لطلبات OPTIONS
+app.options('*', cors());
  // routes
  app.use('/api/workouts', workoutRoutes)
  async function connectDB() {
