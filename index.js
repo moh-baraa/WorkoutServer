@@ -5,7 +5,8 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const app = express()
 const cors = require('cors')
-app.use(cors())
+app.use(cors({ origin: '*' })) // ← السماح للجميع (أو ضع الدومين فقط)
+app.use(express.json())
 // create an api
 // app.get('/', (req, res)=>{ // req is request (data from user in url)
 //     // res is responde from the server to the user
