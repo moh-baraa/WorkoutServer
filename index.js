@@ -1,34 +1,28 @@
- const express = require('express')
- require('dotenv').config()
- const workoutRoutes = require('./routes/workout')
- const mongoose = require('mongoose')
- const cors = require('cors')
- const app = express()
-const allowedOrigins = [
-    'https://workout-frontend-eight.vercel.app',
-    'http://localhost:3000'
-];
+const express = require('express')
+require('dotenv').config()
+const workoutRoutes = require('./routes/workouts.js')
+const mongoose = require('mongoose')
+const cors = require('cors')
+const userRoutes = require('./routes/user')
 
-app.use(cors({
-    origin: allowedOrigins,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+const app = express()
+app.use(cors())
 
-// معالج خاص لطلبات OPTIONS
-app.options('*', cors());
- // routes
- app.use('/api/workouts', workoutRoutes)
- async function connectDB() {
- try {
- // connect to db
- await mongoose.connect(process.env.MONGO_URI)
- // listen to port
- app.listen(process.env.PORT, () => {
- console.log('connected to db and listening for requests on port', process.env.PORT)
- })
- } catch (error) {
- console.log(error)
- }
- }
- connectDB()
+app.use(express.json())
+app.use('/api/workouts', workoutRoutes)
+app.use('/api/user',userRoutes)
+
+async function connectDb() {
+    try {
+        //connect to db
+        await mongoose.connect(process.env.MONGO_URI)
+        //listen to port
+        app.listen(process.env.PORT, () => {
+            console.log('connected to db and listening for requests on port', process.env.PORT)
+        })
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
+connectDb();
