@@ -5,33 +5,17 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const userRoutes = require('./routes/user')
 
-// express app
 const app = express()
 app.use(cors())
 
-
-// create an api
-// app.get('/', (req, res)=>{ // req is request (data from user in url)
-//     // res is responde from the server to the user
-//     res.json({mssg: 'Welcom to the app'})
-// })
-
-// middleware (middle between client and server)
 app.use(express.json())
-//routes
+
 app.use('/api/workouts', workoutRoutes)
 app.use('/api/user',userRoutes)
 
-// listen for requests
-// app.listen(4000, ()=>{
-//     console.log('listening on port 4000')
-// })
-
 async function connectDb() {
     try {
-        //connect to db
         await mongoose.connect(process.env.MONGO_URI)
-        //listen to port
         app.listen(process.env.PORT, () => {
             console.log('connected to db and listening for requests on port', process.env.PORT)
         })
